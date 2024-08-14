@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recharge Requests</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+  <link rel="stylesheet" href="/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/admin.css">
+  <style>
+    body {
+      font-family: 'Source Sans Pro', sans-serif;
+    }
+    .content-wrapper {
+      margin: 20px;
+    }
+    .table th, .table td {
+      text-align: center;
+    }
+    .form-group {
+      margin: 20px auto;
+      text-align: center;
+    }
+  </style>
+</head>
+<body class="hold-transition sidebar-mini">
+  <div class="wrapper">
+    <!-- Navigation inclusion if necessary -->
+    <%- include('nav') %>
+    <div class="content-wrapper">
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Recharge Requests</h1>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="form-group">
+        <input type="text" id="search" placeholder="Enter The Account You Want To Search" class="form-control">
+      </div>
+
+      <section class="content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Recharge List</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body p-0">
+            <table class="table table-striped projects" id="table1">
+              <thead>
+                <tr>
+                  <th class="text-center">#</th>
+                  <th class="text-center">Mobile Number</th>
+                  <th class="text-center">UTR Number</th>
+                  <th class="text-center">Unique Number</th>
+                  <th class="text-center">amount</th>
+                  <th class="text-center">Status</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% rechargeRequests.forEach(request => { %>
+                  <tr>
+                    <td><%= request.id %></td>
+                    <td><%= request.mobileNumber %></td>
+                    <td><%= request.utrNumber %></td>
+                    <td><%= request.uniqueNumber %></td>
+                    <td><%= request.amount %></td>
+                    <td><%= request.status %></td>
+                    <td>
+                      <% if (request.status !== 'Completed') { %>
+                        <button type="button" class="btn btn-success btn-sm approve-btn" data-id="<%= request.id %>" data-toggle="modal" data-target="#approveModal">Approve</button>
+                      <% } %>
+                      <% if (request.status === 'Completed') { %>
+                        <button type="button" class="btn btn-success btn-sm approve-btn" ><%= request.amount %> ✅</button>
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <nav aria-label="Page navigation example" class="m-3 d-flex justify-content-center">
+            <ul class="pagination table1">
+              <li class="page-item previous">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+              </li>
+              <div id="numbers" style="display: flex;"></div>
+              <li class="page-item next">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="approveModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="approveModalLabel">Approve Recharge Request</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="approveForm">
+            <div class="form-group">
+              <label for="amount">Enter Amount:</label>
+              <input type="number" class="form-control" id="amount" name="amount" required>
+              <input type="hidden" id="requestId" name="requestId">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/plugins/jquery/jquery.min.js"></script>
+  <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/dist/js/adminlte.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  <script src="/js/admin/admin.js"></script>
+  <script src="/js/admin/tables.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function() {
+    $('.approve-btn').on('click', function() {
+        var requestId = $(this).data('id');
+        $('#requestId').val(requestId);
+    });
+
+    $('#approveForm').on('submit', function(e) {
+        e.preventDefault();
+        var requestId = $('#requestId').val();
+        var amount = $('#amount').val();
+        
+        $.ajax({
+          type: "POST",
+          url: "/api/webapi/admin/approveRequest",
+          data: {
+            id: requestId,
+            amount: amount
+          },
+          dataType: "json",
+          success: function(response) {
+            if(response.success) {
+              Swal.fire(
+                'Approved!',
+                response.message,
+                'success'
+              ).then(function() {
+                location.reload();
+              });
+            } else {
+              Swal.fire(
+                'Error!',
+                response.message,
+                'error'
+              );
+            }
+          },
+          error: function(response) {
+            Swal.fire(
+              'Error!',
+              'There was a problem approving the request.',
+              'error'
+            );
+          }
+        });
+    });
+});
+
+  </script>
+</body>
+</html>
