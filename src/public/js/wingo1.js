@@ -403,7 +403,7 @@ function selectCss(color, bg, text) {
 function totalMoney() {
   let value = $(".stepper-box .digit-box input").val().trim();
   let money = $(".amount-box").attr("data-money");
-  let total = value * money;
+  let total = parseFloat(value * money).toFixed(2);
   $(".foot .right span:eq(1)").text(total + "");
 }
 
