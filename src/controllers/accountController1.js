@@ -137,7 +137,7 @@ const register = async(req, res) => {
             });
         } else {
             if (check_i.length == 1) {
-                if (check_ip.length <= 3) {
+            
                     let ctv = '';
                     if (check_i[0].level == 2) {
                         ctv = check_i[0].phone;
@@ -151,12 +151,7 @@ const register = async(req, res) => {
                         message: 'Register Sucess',
                         status: true
                     });
-                } else {
-                    return res.status(200).json({
-                        message: 'Registered IP address',
-                        status: false
-                    });
-                }
+              
             } else {
                 return res.status(200).json({
                     message: 'Referrer code does not exist',
