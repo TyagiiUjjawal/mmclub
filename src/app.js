@@ -49,13 +49,28 @@ app.post('/api/webapi/admin/approveRequest', async (req, res) => {
 
         const mobileNumber = rows[0].mobileNumber;
 
+        // Check if the user has made any previous deposits
+        const [userDeposits] = await connection.execute(
+            'SELECT COUNT(*) AS depositCount FROM rechargeRequests WHERE mobileNumber = ? AND status = ?',
+            [mobileNumber, 'Completed']
+        );
+    
+
+        const isFirstDeposit = userDeposits[0].depositCount === 1;
+        
+        // Increment the amount by 5% if it's the first deposit
+        let finalAmount = amount;
+        if (isFirstDeposit) {
+            finalAmount = amount * 1.05;
+            console.log(`First deposit detected. Incremented amount by 5% to: ${finalAmount}`);
+        }
         // Update users table
         await connection.execute(
             'UPDATE users SET money = money + ? WHERE phone = ?',
-            [amount, mobileNumber]
+            [finalAmount, mobileNumber]
         );
 
-        console.log(`Request approved successfully for mobile number: ${mobileNumber}`);
+        console.log(`Request approved successfully for mobile number: ${mobileNumber} with final amount: ${finalAmount}`);
 
         res.json({ success: true, message: 'Request approved successfully.' });
     } catch (error) {
