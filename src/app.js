@@ -73,55 +73,7 @@ app.post("/api/webapi/admin/approveRequest", async (req, res) => {
     console.log(
       `Request approved successfully for mobile number: ${mobileNumber} with final amount: ${finalAmount}`
     );
-
-    // Referral logic
-    const referralPercentages = [0.006, 0.002, 0.001, 0.0005, 0.0001, 0.00005];
-
-    let currentMobileNumber = mobileNumber;
-    for (let i = 0; i < referralPercentages.length; i++) {
-      // Get the referrer
-      const [referrer] = await connection.execute(
-        "SELECT invite FROM users WHERE phone = ?",
-        [currentMobileNumber]
-      );
-      console.log(referrer);
-
-      if (referrer.length === 0) {
-        break; // No further referrers
-      }
-
-      const referrerCode = referrer[0].invite;
-      const [ref] = await connection.execute(
-        "SELECT phone FROM users WHERE code = ?",
-        [referrerCode]
-      );
-      if (ref.length === 0) {
-        break;
-      }
-
-      const referralBonus = amount * referralPercentages[i];
-
-      // Determine which commission column to update
-      let commissionField = "roses_f";
-      if (i === 0) {
-        commissionField = "roses_f1"; // Direct commission for first-level referrer
-      }
-
-      // Update referrer's money and commission fields
-      await connection.execute(
-        `UPDATE users SET money = money + ?, ${commissionField} = ${commissionField} + ?, roses_today = roses_today + ? WHERE phone = ?`,
-        [referralBonus, referralBonus, referralBonus, ref[0].phone]
-      );
-
-      console.log(
-        `Transferred ${referralBonus} to referrer: ${ref[0].phone} at level ${
-          i + 1
-        }`
-      );
-
-      currentMobileNumber = ref[0].phone; // Move to the next referrer in the chain
-    }
-
+    
     res.json({ success: true, message: "Request approved successfully." });
   } catch (error) {
     console.error("Error in approving request:", error.message);
