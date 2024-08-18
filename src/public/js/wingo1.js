@@ -143,15 +143,17 @@ $.ajax({
     // Assuming firstGame is defined somewhere in your code
     if (firstGame && firstGame.stage === list_orders[0].period) {
         var modal = document.getElementById("myModal");
-        modal.style.display = "block";
+        var lossModal = document.getElementById("myModalLoss");
         var myModalheader = document.getElementById("myModal_header");
         var myModal_result = document.getElementById("myModal_result");
         var lottery_result = document.getElementById("lottery_result");
         var myModal_result_Period = document.getElementById("myModal_result_Period");
         if (firstGame.get == 0) {
+            lossModal.style.display = "block";
             myModalheader.innerHTML = "Try Again 🥺";
             myModal_result.innerHTML = "LOSS :" + firstGame.money;
         } else {
+            modal.style.display = "block";
             myModalheader.innerHTML = "Winning 🥇";
             myModal_result.innerHTML = "WIN :" + firstGame.get;
         }
