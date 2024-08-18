@@ -681,7 +681,6 @@ const addWinGo = async (game) => {
 
 
 const handlingWinGo1P = async (typeid) => {
-
     let game = '';
     if (typeid == 1) game = 'wingo';
     if (typeid == 3) game = 'wingo3';
@@ -690,145 +689,43 @@ const handlingWinGo1P = async (typeid) => {
 
     const [winGoNow] = await connection.query(`SELECT * FROM wingo WHERE status != 0 AND game = '${game}' ORDER BY id DESC LIMIT 1 `);
 
-    // update ket qua
+    // update result
     await connection.execute(`UPDATE minutes_1 SET result = ? WHERE status = 0 AND game = '${game}'`, [winGoNow[0].amount]);
     let result = Number(winGoNow[0].amount);
-    switch (result) {
-        case 0:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "d" AND bet != "0" AND bet != "t" `, []);
-            break;
-        case 1:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "x" AND bet != "1" `, []);
-            break;
-        case 2:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "d" AND bet != "2" `, []);
-            break;
-        case 3:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "x" AND bet != "3" `, []);
-            break;
-        case 4:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "d" AND bet != "4" `, []);
-            break;
-        case 5:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "x" AND bet != "5" AND bet != "t" `, []);
-            break;
-        case 6:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "d" AND bet != "6" `, []);
-            break;
-        case 7:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "x" AND bet != "7" `, []);
-            break;
-        case 8:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "d" AND bet != "8" `, []);
-            break;
-        case 9:
-            await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "l" AND bet != "n" AND bet != "x" AND bet != "9" `, []);
-            break;
-        default:
-            break;
-    }
 
+    // Mark bets as losing if they don't match the result
+    await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "${result}"`, []);
+
+    // Mark bets as losing for "l" if result is less than 5, otherwise for "n"
     if (result < 5) {
-        await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet = "l" `, []);
+        await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet = "l"`, []);
     } else {
-        await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet = "n" `, []);
+        await connection.execute(`UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet = "n"`, []);
     }
 
-    // lấy ra danh sách đặt cược chưa xử lý
+    // Get list of unprocessed bets (status 0)
     const [order] = await connection.execute(`SELECT * FROM minutes_1 WHERE status = 0 AND game = '${game}' `);
+
+    // Process each bet
     for (let i = 0; i < order.length; i++) {
         let orders = order[i];
-        let result = orders.result;
         let bet = orders.bet;
         let total = orders.money;
         let id = orders.id;
         let phone = orders.phone;
-        var nhan_duoc = 0;
-        // x - green
-        // t - Violet
-        // d - red 
+        let nhan_duoc = 0;
 
-        // Sirf 1-4 aur 6-9 tk hi *9 aana chahiye
-        // Aur 0 aur 5 pe *4.5
-        // Aur red aur green pe *2
-        // 1,2,3,4,6,7,8,9
-
-
-        if (bet == 'l' || bet == 'n') {
-            nhan_duoc = total * 2;
-        } else {
-            if (result == 0 || result == 5) {
-                if (bet == 'd' || bet == 'x') {
-                    nhan_duoc = total * 1.5;
-                } else if (bet == 't') {
-                    nhan_duoc = total * 4.5;
-                } else if (bet == "0" || bet == "5") {
-                    nhan_duoc = total * 4.5;
-                }
-            } else {
-                if (result == 1 && bet == "1") {
-                    nhan_duoc = total * 9;
-                } else {
-                    if (result == 1 && bet == 'x') {
-                        nhan_duoc = total * 2;
-                    }
-                }
-                if (result == 2 && bet == "2") {
-                    nhan_duoc = total * 9;
-                } else {
-                    if (result == 2 && bet == 'd') {
-                        nhan_duoc = total * 2;
-                    }
-                }
-                if (result == 3 && bet == "3") {
-                    nhan_duoc = total * 9;
-                } else {
-                    if (result == 3 && bet == 'x') {
-                        nhan_duoc = total * 2;
-                    }
-                }
-                if (result == 4 && bet == "4") {
-                    nhan_duoc = total * 9;
-                } else {
-                    if (result == 4 && bet == 'd') {
-                        nhan_duoc = total * 2;
-                    }
-                }
-                if (result == 6 && bet == "6") {
-                    nhan_duoc = total * 9;
-                } else {
-                    if (result == 6 && bet == 'd') {
-                        nhan_duoc = total * 2;
-                    }
-                }
-                if (result == 7 && bet == "7") {
-                    nhan_duoc = total * 9;
-                } else {
-                    if (result == 7 && bet == 'x') {
-                        nhan_duoc = total * 2;
-                    }
-                }
-                if (result == 8 && bet == "8") {
-                    nhan_duoc = total * 9;
-                } else {
-                    if (result == 8 && bet == 'd') {
-                        nhan_duoc = total * 2;
-                    }
-                }
-                if (result == 9 && bet == "9") {
-                    nhan_duoc = total * 9;
-                } else {
-                    if (result == 9 && bet == 'x') {
-                        nhan_duoc = total * 2;
-                    }
-                }
-            }
+        // If bet matches result, double the money and apply 2% tax
+        if (bet == result || (result < 5 && bet == 'l') || (result >= 5 && bet == 'n')) {
+            nhan_duoc = total * 2;           // Double the bet
+            nhan_duoc = nhan_duoc * 0.98;    // Apply 2% tax
         }
+
+        // Update user's money and mark bet as processed
         const [users] = await connection.execute('SELECT `money` FROM `users` WHERE `phone` = ?', [phone]);
         let totals = parseFloat(users[0].money) + parseFloat(nhan_duoc);
         await connection.execute('UPDATE `minutes_1` SET `get` = ?, `status` = 1 WHERE `id` = ? ', [parseFloat(nhan_duoc), id]);
-        const sql = 'UPDATE `users` SET `money` = ? WHERE `phone` = ? ';
-        await connection.execute(sql, [totals, phone]);
+        await connection.execute('UPDATE `users` SET `money` = ? WHERE `phone` = ? ', [totals, phone]);
     }
 }
 
