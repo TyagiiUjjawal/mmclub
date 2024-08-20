@@ -167,7 +167,7 @@ socket.on("data-server", function (msg) {
               } else {
                 modal.style.display = "block";
                 myModalheader.innerHTML = "Winning 🥇";
-                myModal_result.innerHTML = "WIN :" + firstGame.get;
+                myModal_result.innerHTML = "WIN :" + firstGame.get/0.98;
               }
               myModal_result_Period.innerHTML =
                 "Period : 1min " + firstGame.stage;
@@ -1031,64 +1031,65 @@ function showListOrder2(list_orders, x) {
                                     )}</div>
                                 </div>
                                 <div data-v-a9660e98="" class="money">
-                                        ${
-                                          list_orders.status == 1 &&
-                                          list_orders.bet == 0
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 4.5 +
-                                              " </span>"
-                                            : list_orders.status == 1 &&
-                                              list_orders.bet == 5
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 4.5 +
-                                              " </span>"
-                                            : list_orders.status == 1 &&
-                                              list_orders.result == 0 &&
-                                              list_orders.bet == "d"
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 1.5 +
-                                              " </span>"
-                                            : list_orders.status == 1 &&
-                                              list_orders.bet == "d"
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 2 +
-                                              " </span>"
-                                            : list_orders.status == 1 &&
-                                              list_orders.bet == "t"
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 4.5 +
-                                              " </span>"
-                                            : list_orders.status == 1 &&
-                                              list_orders.result == 5 &&
-                                              list_orders.bet == "x"
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 1.5 +
-                                              " </span>"
-                                            : list_orders.status == 1 &&
-                                              list_orders.bet == "x"
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 2 +
-                                              " </span>"
-                                            : list_orders.status == 1 &&
-                                              list_orders.bet == "l"
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 2 +
-                                              " </span>"
-                                            : list_orders.status == 1 &&
-                                              list_orders.bet == "n"
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 2 +
-                                              " </span>"
-                                            : list_orders.status == 1
-                                            ? '<span data-v-a9660e98="" class="success"> + ' +
-                                              list_orders.money * 9 +
-                                              " </span>"
-                                            : list_orders.status == 2
-                                            ? '<span data-v-a9660e98="" class="fail"> - ' +
-                                              list_orders.money +
-                                              "</span>"
-                                            : ""
-                                        }
+                                ${
+                                  list_orders.status == 1 &&
+                                  list_orders.bet == 0
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 1 &&
+                                      list_orders.bet == 5
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 1 &&
+                                      list_orders.result == 0 &&
+                                      list_orders.bet == "d"
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 1 &&
+                                      list_orders.bet == "d"
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 1 &&
+                                      list_orders.bet == "t"
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 1 &&
+                                      list_orders.result == 5 &&
+                                      list_orders.bet == "x"
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 1 &&
+                                      list_orders.bet == "x"
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 1 &&
+                                      list_orders.bet == "l"
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 1 &&
+                                      list_orders.bet == "n"
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 1
+                                    ? '<span data-v-a9660e98="" class="success"> + ' +
+                                      (list_orders.money * 2 ).toFixed(2) +
+                                      " </span>"
+                                    : list_orders.status == 2
+                                    ? '<span data-v-a9660e98="" class="fail"> - ' +
+                                      (list_orders.money ).toFixed(2) +
+                                      "</span>"
+                                    : ""
+                                }
+                                
                                 </div>
                             </div>
                         </div>
