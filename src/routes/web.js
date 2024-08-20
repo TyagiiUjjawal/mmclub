@@ -341,8 +341,11 @@ async function submitSitemap(auth) {
 
         const phone = user[0].phone;
 
-        // Query to fetch recharge records filtered by the user's phone number
-        const [recharges] = await connection.query('SELECT mobileNumber, amount, status, utrNumber FROM rechargeRequests WHERE mobileNumber = ?', [phone]);
+        // Query to fetch recharge records filtered by the user's phone number and ordered by timestamp (most recent first)
+        const [recharges] = await connection.query(
+            'SELECT mobileNumber, amount, status, utrNumber,timestamp FROM rechargeRequests WHERE mobileNumber = ? ORDER BY timestamp DESC',
+            [phone]
+        );
 
         res.json(recharges);
     } catch (err) {

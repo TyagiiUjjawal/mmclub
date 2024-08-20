@@ -6,7 +6,7 @@ require('dotenv').config();
 let timeNow = Date.now();
 
 const getRechargeRequests = async () => {
-    const [rows] = await connection.execute('SELECT * FROM rechargeRequests');
+    const [rows] = await connection.execute('SELECT * FROM rechargeRequests ORDER BY timestamp DESC');
     return rows;
 };
 

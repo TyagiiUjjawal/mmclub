@@ -64,7 +64,6 @@
             <table class="table table-striped projects" id="table1">
               <thead>
                 <tr>
-                  <th class="text-center">#</th>
                   <th class="text-center">Mobile Number</th>
                   <th class="text-center">UTR Number</th>
                   <th class="text-center">Unique Number</th>
@@ -76,7 +75,6 @@
               <tbody>
                 <% rechargeRequests.forEach(request => { %>
                   <tr>
-                    <td><%= request.id %></td>
                     <td><%= request.mobileNumber %></td>
                     <td><%= request.utrNumber %></td>
                     <td><%= request.uniqueNumber %></td>

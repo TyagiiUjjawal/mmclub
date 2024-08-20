@@ -7378,34 +7378,51 @@
 
     <script>
         async function fetchRecharges() {
-            try {
-                const response = await fetch('/api/recharges');
-                const recharges = await response.json();
+    try {
+        const response = await fetch('/api/recharges');
+        const recharges = await response.json();
 
-                const rechargeList = document.getElementById('rechargeList');
-                rechargeList.innerHTML = '';
+        const rechargeList = document.getElementById('rechargeList');
+        rechargeList.innerHTML = '';
 
-                recharges.forEach(recharge => {
-                    const card = document.createElement('div');
-                    card.classList.add('recharge-card');
+        recharges.forEach(recharge => {
+            const card = document.createElement('div');
+            card.classList.add('recharge-card');
 
-                    const info1 = document.createElement('div');
-                    info1.classList.add('info');
-                    info1.innerHTML = `<div>Mobile: ${recharge.mobileNumber}</div><div>Amount: ₹${recharge.amount}</div>`;
+            // Parse and format the timestamp
+            const timestamp = new Date(recharge.timestamp);
+            let formattedTimestamp = 'Invalid Date';
 
-                    const info2 = document.createElement('div');
-                    info2.classList.add('info');
-                    info2.innerHTML = `<div>UTR: ${recharge.utrNumber || 'N/A'}</div><div class="status ${'status-' + recharge.status.toLowerCase()}">${recharge.status}</div>`;
-
-                    card.appendChild(info1);
-                    card.appendChild(info2);
-
-                    rechargeList.appendChild(card);
+            // Ensure the timestamp is valid before formatting
+            if (!isNaN(timestamp.getTime())) {
+                formattedTimestamp = timestamp.toLocaleString('en-GB', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
                 });
-            } catch (err) {
-                console.error('Error fetching recharges:', err);
             }
-        }
+
+            const info1 = document.createElement('div');
+            info1.classList.add('info');
+            info1.innerHTML = `<div>Amount: ₹${recharge.amount}</div><div style="color:blue"> ${formattedTimestamp}</div>`;
+
+            const info2 = document.createElement('div');
+            info2.classList.add('info');
+            info2.innerHTML = `<div>UTR: ${recharge.utrNumber || 'N/A'}</div><div class="status ${'status-' + recharge.status.toLowerCase()}">${recharge.status}</div>`;
+
+            card.appendChild(info1);
+            card.appendChild(info2);
+
+            rechargeList.appendChild(card);
+        });
+    } catch (err) {
+        console.error('Error fetching recharges:', err);
+    }
+}
+
 
         window.onload = fetchRecharges;
     </script>
