@@ -408,12 +408,35 @@
     </div>
   </div>
 
+  <div id="myModalLoss" class="modal" style="display: none">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+
+      <img src="/missningBg-9deda6ac.png" alt="Popup Image" style="filter: grayscale(100%);">
+      <div class="text-over-image">
+        <!-- Your text here -->
+        <div id="myModal_header" style="color: black;">Try Again</div><br>
+      </div>
+      <div class="text-over-image-l" style="color: black;">
+        <!-- Your text here -->
+        <div id="lottery_result">Lottery Result: <span class="btn-boox">Green</span><span class="btn-boox">7</span><span
+            class="btn-boox">Big</span></div><br>
+      </div>
+      <div class="close-btn1">
+        <span class="close-x">&times;</span>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Get the modal
     var modal = document.getElementById("myModal");
+    var lossModal = document.getElementById("myModalLoss");
 
     // Get the element that closes the modal
     var closeBtn = document.querySelector(".close-btn");
+    var closeBtn1 = document.querySelector(".close-btn1");
 
 
 
@@ -421,11 +444,17 @@
     closeBtn.onclick = function () {
       modal.style.display = "none";
     }
+    closeBtn1.onclick = function () {
+      lossModal.style.display = "none";
+    }
 
     // When the user clicks anywhere outside of the modal, also close it
     window.onclick = function (event) {
       if (event.target == modal) {
         modal.style.display = "none";
+      }
+      if (event.target == lossModal) {
+        lossModal.style.display = "none";
       }
     }
 

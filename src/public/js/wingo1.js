@@ -143,15 +143,17 @@ $.ajax({
     // Assuming firstGame is defined somewhere in your code
     if (firstGame && firstGame.stage === list_orders[0].period) {
         var modal = document.getElementById("myModal");
-        modal.style.display = "block";
+        var lossModal = document.getElementById("myModalLoss");
         var myModalheader = document.getElementById("myModal_header");
         var myModal_result = document.getElementById("myModal_result");
         var lottery_result = document.getElementById("lottery_result");
         var myModal_result_Period = document.getElementById("myModal_result_Period");
         if (firstGame.get == 0) {
+            lossModal.style.display = "block";
             myModalheader.innerHTML = "Try Again 🥺";
             myModal_result.innerHTML = "LOSS :" + firstGame.money;
         } else {
+            modal.style.display = "block";
             myModalheader.innerHTML = "Winning 🥇";
             myModal_result.innerHTML = "WIN :" + firstGame.get;
         }
@@ -403,9 +405,7 @@ function selectCss(color, bg, text) {
 function totalMoney() {
   let value = $(".stepper-box .digit-box input").val().trim();
   let money = $(".amount-box").attr("data-money");
-  let total = value * money;
-  console.log(total,"total");
-  console.log(value,"value");
+  let total = parseFloat(value * money).toFixed(2);
   $(".foot .right span:eq(1)").text(total + "");
 }
 
