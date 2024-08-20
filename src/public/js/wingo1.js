@@ -404,6 +404,8 @@ function totalMoney() {
   let value = $(".stepper-box .digit-box input").val().trim();
   let money = $(".amount-box").attr("data-money");
   let total = value * money;
+  console.log(total,"total");
+  console.log(value,"value");
   $(".foot .right span:eq(1)").text(total + "");
 }
 
@@ -478,6 +480,7 @@ $(".betting-mark .amount-box .li").click(function (e) {
     color: "rgb(255, 255, 255)",
   });
   let thisValue = $(this).attr("data-x");
+  console.log(thisValue,"thisValue");
   $(".amount-box").attr("data-money", thisValue);
   totalMoney();
 });
@@ -667,6 +670,7 @@ $(".game-list .tab .li:eq(2)").click(function (e) {
 });
 
 function alertMessJoin(msg) {
+  console.log(msg,"s");
   $("body").append(
     `
                 <div data-v-1dcba851="" class="msg">
@@ -687,10 +691,14 @@ $(".foot .right").click(function (e) {
   let join = $(this).attr("data-join");
   let x = $(".stepper-box input").val().trim();
   let money = $(".amount-box").attr("data-money");
+  console.log(join, x, money,"dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
   if (!join || !x || !money) {
     return;
+    console.log(join, x, money,"dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
   }
+  console.log(join, x, money,"dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
   $(this).addClass("block-click");
+  console.log(join, x, money,"dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
   $.ajax({
     type: "POST",
     url: "/api/webapi/action/join",

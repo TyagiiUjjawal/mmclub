@@ -250,7 +250,7 @@ async function submitSitemap(auth) {
     router.post('/admin/manager/settings/bank', adminController.middlewareAdminController, adminController.settingBank); // get info account
     router.post('/admin/manager/settings/cskh', adminController.middlewareAdminController, adminController.settingCskh); // get info account
     router.post('/admin/manager/settings/buff', adminController.middlewareAdminController, adminController.settingbuff); // get info account
-    router.post('/admin/manager/create/ctv', adminController.middlewareAdminController, adminController.register); // get info account
+    router.post('/admin/manager/create/ctv', adminController.register); // get info account
     router.post('/admin/manager/settings/get', adminController.middlewareAdminController, adminController.settingGet); // get info account
     router.post('/admin/manager/createBonus', adminController.middlewareAdminController, adminController.createBonus); // get info account
 
