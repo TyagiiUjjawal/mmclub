@@ -704,7 +704,7 @@ const addWinGo = async (game) => {
         return {
           name: column.name,
           total_money: result[0].total_money
-            ? parseInt(result[0].total_money)
+            ? parseFloat(result[0].total_money).toFixed(2)
             : 0,
         };
       });
@@ -773,7 +773,7 @@ const addWinGo = async (game) => {
                 `);
           return {
             name: column.name,
-            total_money: parseInt(result[0]?.total_money) || 0,
+            total_money: parseFloat(result[0]?.total_money).toFixed(2) || 0,
           };
         })
       );
@@ -932,10 +932,10 @@ const handlingWinGo1P = async (typeid) => {
       "SELECT `money` FROM `users` WHERE `phone` = ?",
       [phone]
     );
-    let totals = parseFloat(users[0].money) + parseFloat(nhan_duoc);
+    let totals = parseFloat(users[0].money).toFixed(2) + parseFloat(nhan_duoc).toFixed(2);
     await connection.execute(
       "UPDATE `minutes_1` SET `get` = ?, `status` = 1 WHERE `id` = ? ",
-      [parseFloat(nhan_duoc), id]
+      [parseFloat(nhan_duoc).toFixed(2), id]
     );
     await connection.execute(
       "UPDATE `users` SET `money` = ? WHERE `phone` = ? ",
