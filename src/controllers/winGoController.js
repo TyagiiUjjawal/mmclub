@@ -416,9 +416,11 @@ const betWinGo = async (req, res) => {
       timeNow,
     ]);
     await connection.execute(
-      "UPDATE `users` SET `money` = `money` - ? WHERE `token` = ? ",
-      [money * x, auth]
+      "UPDATE `users` SET `money` = `money` - ?, `betSurplus` = `betSurplus` + ? WHERE `token` = ?",
+      [money * x, money * x, auth]
     );
+    
+    console.log("betWinGo", money * x);
     const [users] = await connection.query(
       "SELECT `money`, `level` FROM users WHERE token = ? AND veri = 1  LIMIT 1 ",
       [auth]
