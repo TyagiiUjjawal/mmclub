@@ -168,13 +168,13 @@ socket.on("data-server", function (msg) {
               } else {
                 modal.style.display = "block";
                 myModalheader.innerHTML = "Winning 🥇";
-                myModal_result.innerHTML =
-                  "WIN :" + (firstGame.get/0.98).toFixed(2);
+                myModal_result.innerHTML = "WIN :" + firstGame.get;
               }
               myModal_result_Period.innerHTML =
                 "Period : 1min " + firstGame.stage;
 
               let color;
+              let color1;
               let type;
 
               if (firstGame.result >= 0 && firstGame.result <= 4) {
@@ -184,39 +184,49 @@ socket.on("data-server", function (msg) {
               }
 
               if (firstGame.result == 0) {
-                color = "Red + Violet";
+                color1 = "Red + Violet";
               } else if (firstGame.result == 5) {
-                color = "Green + Violet";
+                color1 = "Green + Violet";
               } else if (firstGame.result % 2 == 0) {
-                color = "Red";
+                color1 = "Red";
               } else {
-                color = "Green";
+                color1 = "Green";
+              }
+
+              if (firstGame.result == 0) {
+                color = "linear-gradient(to right, red, violet)";
+              } else if (firstGame.result == 5) {
+                color = "linear-gradient(to right, green, violet)";
+              } else if (firstGame.result % 2 == 0) {
+                color = "red";
+              } else {
+                color = "green";
               }
               lottery_result.innerHTML =
-                "Lottery Result:<span class='btn-boox' style='background-color: " +
+                "Lottery Result:<span class='btn-boox' style='background: " +
                 color +
                 ";'>" +
-                color +
-                "</span><span class='btn-boox' style='background-color: " +
+                color1 +
+                "</span><span class='btn-boox' style='background: " +
                 color +
                 ";'>" +
                 firstGame.result +
-                "</span><span class='btn-boox' style='background-color: " +
+                "</span><span class='btn-boox' style='background: " +
                 color +
                 ";'>" +
                 type +
                 "</span>";
 
               lottery_resultLoss.innerHTML =
-                "Lottery Result:<span class='btn-boox' style='background-color: " +
+                "Lottery Result:<span class='btn-boox' style='background: " +
                 color +
                 ";'>" +
-                color +
-                "</span><span class='btn-boox' style='background-color: " +
+                color1 +
+                "</span><span class='btn-boox' style='background: " +
                 color +
                 ";'>" +
                 firstGame.result +
-                "</span><span class='btn-boox' style='background-color: " +
+                "</span><span class='btn-boox' style='background: " +
                 color +
                 ";'>" +
                 type +
