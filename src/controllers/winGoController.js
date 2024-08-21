@@ -879,7 +879,7 @@ const handlingWinGo1P = async (typeid) => {
     `SELECT * FROM wingo WHERE status != 0 AND game = '${game}' ORDER BY id DESC LIMIT 1 `
   );
 
-  // Update result
+  // update result
   await connection.execute(
     `UPDATE minutes_1 SET result = ? WHERE status = 0 AND game = '${game}'`,
     [winGoNow[0].amount]
@@ -920,25 +920,20 @@ const handlingWinGo1P = async (typeid) => {
     let nhan_duoc = 0;
 
     // If bet matches result, double the money and apply 2% tax
-    if (bet == result) {
-      // Correct number bet
-      nhan_duoc = total * 2;
-    } else if (result < 5 && bet == "l") {
-      // Correct low bet
-      nhan_duoc = total * 2;
-    } else if (result >= 5 && bet == "n") {
-      // Correct high bet
-      nhan_duoc = total * 2;
-    }
+    if (
+      bet == result ||
+      (result < 5 && bet == "l") ||
+      (result >= 5 && bet == "n")
+    ) {
+      nhan_duoc = total;
+      // nhan_duoc = nhan_duoc * 0.98;
+      nhan_duoc = nhan_duoc * 2;
 
-    // Apply 2% tax on winnings
-    nhan_duoc = nhan_duoc * 0.98;
-
-    if (nhan_duoc > 0) {
       const [users] = await connection.execute(
         "SELECT `money` FROM `users` WHERE `phone` = ?",
         [phone]
       );
+      console.log("users" + users);
       let totals = parseFloat(users[0].money + nhan_duoc).toFixed(2);
       await connection.execute(
         "UPDATE `minutes_1` SET `get` = ?, `status` = 1 WHERE `id` = ? ",
@@ -951,7 +946,6 @@ const handlingWinGo1P = async (typeid) => {
     }
   }
 };
-
 
 module.exports = {
   winGoPage,
