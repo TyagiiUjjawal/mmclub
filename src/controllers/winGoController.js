@@ -920,10 +920,15 @@ const handlingWinGo1P = async (typeid) => {
     let nhan_duoc = 0;
 
     // If bet matches result, double the money and apply 2% tax
+    console.log(bet, "bet")
+    console.log(result, "result")
     if (
       bet == result ||
       (result < 5 && bet == "l") ||
-      (result >= 5 && bet == "n")
+      (result >= 5 && bet == "n") ||
+      (result % 2 == 0 && bet == "d") ||
+      (result % 2 != 0 && bet == "x") ||
+      ((result == 5 || result == 0) && bet == "t")
     ) {
       nhan_duoc = total;
       // nhan_duoc = nhan_duoc * 0.98;
