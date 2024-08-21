@@ -419,7 +419,7 @@ const betWinGo = async (req, res) => {
       "UPDATE `users` SET `money` = `money` - ?, `betSurplus` = `betSurplus` + ? WHERE `token` = ?",
       [money * x, money * x, auth]
     );
-    
+
     console.log("betWinGo", money * x);
     const [users] = await connection.query(
       "SELECT `money`, `level` FROM users WHERE token = ? AND veri = 1  LIMIT 1 ",
@@ -925,27 +925,25 @@ const handlingWinGo1P = async (typeid) => {
       (result < 5 && bet == "l") ||
       (result >= 5 && bet == "n")
     ) {
-      nhan_duoc = total; // Double the bet
-      nhan_duoc = nhan_duoc * 0.98; 
-      nhan_duoc = nhan_duoc*2;
-    }
-    console.log("handlingWinGo1P", nhan_duoc);
-    
+      nhan_duoc = total;
+      nhan_duoc = nhan_duoc * 0.98;
+      nhan_duoc = nhan_duoc * 2;
 
-    // Update user's money and mark bet as processed
-    const [users] = await connection.execute(
-      "SELECT `money` FROM `users` WHERE `phone` = ?",
-      [phone]
-    );
-    let totals = parseFloat(users[0].money).toFixed(2) + parseFloat(nhan_duoc).toFixed(2);
-    await connection.execute(
-      "UPDATE `minutes_1` SET `get` = ?, `status` = 1 WHERE `id` = ? ",
-      [parseFloat(nhan_duoc).toFixed(2), id]
-    );
-    await connection.execute(
-      "UPDATE `users` SET `money` = ? WHERE `phone` = ? ",
-      [totals, phone]
-    );
+      const [users] = await connection.execute(
+        "SELECT `money` FROM `users` WHERE `phone` = ?",
+        [phone]
+      );
+      console.log("users" + users);
+      let totals = parseFloat(users[0].money + nhan_duoc).toFixed(2);
+      await connection.execute(
+        "UPDATE `minutes_1` SET `get` = ?, `status` = 1 WHERE `id` = ? ",
+        [parseFloat(nhan_duoc).toFixed(2), id]
+      );
+      await connection.execute(
+        "UPDATE `users` SET `money` = ? WHERE `phone` = ? ",
+        [totals, phone]
+      );
+    }
   }
 };
 
