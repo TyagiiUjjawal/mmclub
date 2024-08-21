@@ -887,11 +887,7 @@ const handlingWinGo1P = async (typeid) => {
   let result = Number(winGoNow[0].amount);
 
   // Mark bets as losing if they don't match the result
-  await connection.execute(
-    `UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "${result}"`,
-    []
-  );
-
+ 
   // Mark bets as losing for "l" if result is less than 5, otherwise for "n"
   if (result < 5) {
     await connection.execute(
@@ -911,6 +907,7 @@ const handlingWinGo1P = async (typeid) => {
   );
 
   // Process each bet
+  console.log(result, "result")
   for (let i = 0; i < order.length; i++) {
     let orders = order[i];
     let bet = orders.bet;
@@ -924,8 +921,8 @@ const handlingWinGo1P = async (typeid) => {
     console.log(result, "result")
     if (
       bet == result ||
-      (result < 5 && bet == "l") ||
-      (result >= 5 && bet == "n") ||
+      (result < 5 && bet == "n") ||
+      (result >= 5 && bet == "l") ||
       (result % 2 == 0 && bet == "d") ||
       (result % 2 != 0 && bet == "x") ||
       ((result == 5 || result == 0) && bet == "t")
@@ -948,6 +945,11 @@ const handlingWinGo1P = async (typeid) => {
         "UPDATE `users` SET `money` = ? WHERE `phone` = ? ",
         [totals, phone]
       );
+    } else {
+      await connection.execute(
+        `UPDATE minutes_1 SET status = 2 WHERE status = 0 AND game = "${game}" AND bet != "${result}"`,
+        []
+      );    
     }
   }
 };
