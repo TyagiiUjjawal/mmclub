@@ -926,7 +926,7 @@ const handlingWinGo1P = async (typeid) => {
       (result >= 5 && bet == "n")
     ) {
       nhan_duoc = total; // Double the bet
-      // nhan_duoc = nhan_duoc * 0.98; 
+      nhan_duoc = nhan_duoc * 0.98; 
       nhan_duoc = nhan_duoc*2;
     }
     console.log("handlingWinGo1P", nhan_duoc);

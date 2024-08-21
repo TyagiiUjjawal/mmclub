@@ -149,7 +149,7 @@ socket.on("data-server", function (msg) {
 
             // Assuming firstGame is defined somewhere in your code
             if (firstGame && firstGame.stage === list_orders[0].period) {
-              console.log("inside setting modal")
+              console.log("inside setting modal");
               var modal = document.getElementById("myModal");
               var lossModal = document.getElementById("myModalLoss");
               var myModalheader = document.getElementById("myModal_header");
@@ -158,7 +158,8 @@ socket.on("data-server", function (msg) {
               var myModal_result_Period = document.getElementById(
                 "myModal_result_Period"
               );
-              var myModalheaderLoss = document.getElementById("myModal_headerLoss");
+              var myModalheaderLoss =
+                document.getElementById("myModal_headerLoss");
               var lottery_resultLoss =
                 document.getElementById("lottery_resultLoss");
               if (firstGame.get == 0) {
@@ -167,7 +168,8 @@ socket.on("data-server", function (msg) {
               } else {
                 modal.style.display = "block";
                 myModalheader.innerHTML = "Winning 🥇";
-                myModal_result.innerHTML = "WIN :" + firstGame.get/0.98.toFixed(2);
+                myModal_result.innerHTML =
+                  "WIN :" + firstGame.get.toFixed(2);
               }
               myModal_result_Period.innerHTML =
                 "Period : 1min " + firstGame.stage;
@@ -190,21 +192,33 @@ socket.on("data-server", function (msg) {
               } else {
                 color = "Green";
               }
-
               lottery_result.innerHTML =
-                "Lottery Result:<span class='btn-boox'>" +
+                "Lottery Result:<span class='btn-boox' style='background-color: " +
                 color +
-                "</span><span class='btn-boox'>" +
+                ";'>" +
+                color +
+                "</span><span class='btn-boox' style='background-color: " +
+                color +
+                ";'>" +
                 firstGame.result +
-                "</span><span class='btn-boox'>" +
+                "</span><span class='btn-boox' style='background-color: " +
+                color +
+                ";'>" +
                 type +
                 "</span>";
-                lottery_resultLoss.innerHTML =
-                "Lottery Result:<span class='btn-boox'>" +
+
+              lottery_resultLoss.innerHTML =
+                "Lottery Result:<span class='btn-boox' style='background-color: " +
                 color +
-                "</span><span class='btn-boox'>" +
+                ";'>" +
+                color +
+                "</span><span class='btn-boox' style='background-color: " +
+                color +
+                ";'>" +
                 firstGame.result +
-                "</span><span class='btn-boox'>" +
+                "</span><span class='btn-boox' style='background-color: " +
+                color +
+                ";'>" +
                 type +
                 "</span>";
             }
@@ -507,7 +521,7 @@ $(".betting-mark .amount-box .li").click(function (e) {
     color: "rgb(255, 255, 255)",
   });
   let thisValue = $(this).attr("data-x");
-  console.log(thisValue,"thisValue");
+  console.log(thisValue, "thisValue");
   $(".amount-box").attr("data-money", thisValue);
   totalMoney();
 });
@@ -696,7 +710,7 @@ $(".game-list .tab .li:eq(2)").click(function (e) {
 });
 
 function alertMessJoin(msg) {
-  console.log(msg,"s");
+  console.log(msg, "s");
   $("body").append(
     `
                 <div data-v-1dcba851="" class="msg">
@@ -717,14 +731,14 @@ $(".foot .right").click(function (e) {
   let join = $(this).attr("data-join");
   let x = $(".stepper-box input").val().trim();
   let money = $(".amount-box").attr("data-money");
-  console.log(join, x, money,"dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
+  console.log(join, x, money, "dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
   if (!join || !x || !money) {
     return;
-    console.log(join, x, money,"dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
+    console.log(join, x, money, "dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
   }
-  console.log(join, x, money,"dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
+  console.log(join, x, money, "dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
   $(this).addClass("block-click");
-  console.log(join, x, money,"dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
+  console.log(join, x, money, "dkjsfbjdksbfkjsbfjkdsbfjksdbfjksdbfjksdbf");
   $.ajax({
     type: "POST",
     url: "/api/webapi/action/join",
@@ -1043,57 +1057,57 @@ function showListOrder2(list_orders, x) {
                                   list_orders.status == 1 &&
                                   list_orders.bet == 0
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 1 &&
                                       list_orders.bet == 5
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 1 &&
                                       list_orders.result == 0 &&
                                       list_orders.bet == "d"
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 1 &&
                                       list_orders.bet == "d"
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 1 &&
                                       list_orders.bet == "t"
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 1 &&
                                       list_orders.result == 5 &&
                                       list_orders.bet == "x"
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 1 &&
                                       list_orders.bet == "x"
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 1 &&
                                       list_orders.bet == "l"
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 1 &&
                                       list_orders.bet == "n"
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 1
                                     ? '<span data-v-a9660e98="" class="success"> + ' +
-                                      (list_orders.money * 2 ).toFixed(2) +
+                                      (list_orders.money * 2).toFixed(2) +
                                       " </span>"
                                     : list_orders.status == 2
                                     ? '<span data-v-a9660e98="" class="fail"> - ' +
-                                      (list_orders.money ).toFixed(2) +
+                                      list_orders.money.toFixed(2) +
                                       "</span>"
                                     : ""
                                 }
