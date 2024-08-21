@@ -169,7 +169,7 @@ socket.on("data-server", function (msg) {
                 modal.style.display = "block";
                 myModalheader.innerHTML = "Winning 🥇";
                 myModal_result.innerHTML =
-                  "WIN :" + firstGame.get.toFixed(2);
+                  "WIN :" + (firstGame.get/0.98).toFixed(2);
               }
               myModal_result_Period.innerHTML =
                 "Period : 1min " + firstGame.stage;
