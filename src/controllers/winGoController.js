@@ -926,7 +926,7 @@ const handlingWinGo1P = async (typeid) => {
       (result >= 5 && bet == "n")
     ) {
       nhan_duoc = total; // Double the bet
-      nhan_duoc = nhan_duoc * 0.98; // Apply 2% tax
+      // nhan_duoc = nhan_duoc * 0.98; 
       nhan_duoc = nhan_duoc*2;
     }
     console.log("handlingWinGo1P", nhan_duoc);
@@ -937,7 +937,7 @@ const handlingWinGo1P = async (typeid) => {
       "SELECT `money` FROM `users` WHERE `phone` = ?",
       [phone]
     );
-    let totals =  parseFloat(nhan_duoc).toFixed(2);
+    let totals = parseFloat(users[0].money).toFixed(2) + parseFloat(nhan_duoc).toFixed(2);
     await connection.execute(
       "UPDATE `minutes_1` SET `get` = ?, `status` = 1 WHERE `id` = ? ",
       [parseFloat(nhan_duoc).toFixed(2), id]

@@ -149,6 +149,7 @@ socket.on("data-server", function (msg) {
 
             // Assuming firstGame is defined somewhere in your code
             if (firstGame && firstGame.stage === list_orders[0].period) {
+              console.log("inside setting modal")
               var modal = document.getElementById("myModal");
               var lossModal = document.getElementById("myModalLoss");
               var myModalheader = document.getElementById("myModal_header");
@@ -157,17 +158,16 @@ socket.on("data-server", function (msg) {
               var myModal_result_Period = document.getElementById(
                 "myModal_result_Period"
               );
-              var myModalheader = document.getElementById("myModal_headerLoss");
-              var lottery_result =
+              var myModalheaderLoss = document.getElementById("myModal_headerLoss");
+              var lottery_resultLoss =
                 document.getElementById("lottery_resultLoss");
               if (firstGame.get == 0) {
                 lossModal.style.display = "block";
-                myModalheader.innerHTML = "Try Again 🥺";
-                myModal_result.innerHTML = "LOSS";
+                myModalheaderLoss.innerHTML = "Try Again 🥺";
               } else {
                 modal.style.display = "block";
                 myModalheader.innerHTML = "Winning 🥇";
-                myModal_result.innerHTML = "WIN :" + firstGame.get/0.98;
+                myModal_result.innerHTML = "WIN :" + firstGame.get/0.98.toFixed(2);
               }
               myModal_result_Period.innerHTML =
                 "Period : 1min " + firstGame.stage;
@@ -192,6 +192,14 @@ socket.on("data-server", function (msg) {
               }
 
               lottery_result.innerHTML =
+                "Lottery Result:<span class='btn-boox'>" +
+                color +
+                "</span><span class='btn-boox'>" +
+                firstGame.result +
+                "</span><span class='btn-boox'>" +
+                type +
+                "</span>";
+                lottery_resultLoss.innerHTML =
                 "Lottery Result:<span class='btn-boox'>" +
                 color +
                 "</span><span class='btn-boox'>" +
