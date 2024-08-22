@@ -64,6 +64,7 @@ app.post("/api/webapi/admin/approveRequest", async (req, res) => {
         `First deposit detected. Incremented amount by 5% to: ${finalAmount}`
       );
     }
+
     // Update users table
     await connection.execute(
       "UPDATE users SET money = money + ? WHERE phone = ?",
@@ -73,7 +74,40 @@ app.post("/api/webapi/admin/approveRequest", async (req, res) => {
     console.log(
       `Request approved successfully for mobile number: ${mobileNumber} with final amount: ${finalAmount}`
     );
-    
+
+    // Referral logic for first deposit only
+    if (isFirstDeposit) {
+      // Get the referrer
+      const [referrer] = await connection.execute(
+        "SELECT invite FROM users WHERE phone = ?",
+        [mobileNumber]
+      );
+
+      if (referrer.length > 0) {
+        const referrerCode = referrer[0].invite;
+
+        const [ref] = await connection.execute(
+          "SELECT phone FROM users WHERE code = ?",
+          [referrerCode]
+        );
+
+        if (ref.length > 0) {
+          const referrerPhone = ref[0].phone;
+          const referralBonus = amount * 0.05; // 5% of the deposit
+
+          // Update referrer's money and commission fields
+          await connection.execute(
+            "UPDATE users SET money = money + ?, roses_f1 = roses_f1 + ?, roses_today = roses_today + ? WHERE phone = ?",
+            [referralBonus, referralBonus, referralBonus, referrerPhone]
+          );
+
+          console.log(
+            `Transferred ${referralBonus} to first-level referrer: ${referrerPhone}`
+          );
+        }
+      }
+    }
+
     res.json({ success: true, message: "Request approved successfully." });
   } catch (error) {
     console.error("Error in approving request:", error.message);
